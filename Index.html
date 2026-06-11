@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grupo 5 — Arquitecto Cloud | Sistemas Operativos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1525;
+    --card: #131929;
+    --border: #1e2d4a;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* FONDO ANIMADO */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(0,212,255,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; width: 100%;
+    background: rgba(10,14,26,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECCIONES */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+  }
+
+  /* HERO */
+  #home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 60px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-blue { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-purple { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+  .badge-green { background: rgba(16,185,129,0.1); color: var(--accent3); border: 1px solid rgba(16,185,129,0.3); }
+
+  /* SECTION TITLES */
+  .sec-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+
+  h2 span { color: var(--accent); }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* EQUIPO */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .team-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .team-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .team-card:hover::before { opacity: 1; }
+
+  .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 auto 1rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .team-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .team-role {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 1.2rem;
+  }
+
+  .github-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .github-btn:hover { background: rgba(0,212,255,0.1); }
+
+  /* COMPONENTES */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .comp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem;
+    transition: border-color 0.3s;
+  }
+
+  .comp-card:hover { border-color: var(--accent); }
+
+  .comp-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .comp-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .comp-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  .comp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(0,212,255,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.2);
+  }
+
+  .tag-purple {
+    background: rgba(124,58,237,0.08);
+    color: #a78bfa;
+    border-color: rgba(124,58,237,0.2);
+  }
+
+  .tag-green {
+    background: rgba(16,185,129,0.08);
+    color: var(--accent3);
+    border-color: rgba(16,185,129,0.2);
+  }
+
+  /* ARQUITECTURA */
+  .arch-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--muted);
+    overflow-x: auto;
+  }
+
+  .arch-box .hl { color: var(--accent); }
+  .arch-box .hl2 { color: #a78bfa; }
+  .arch-box .hl3 { color: var(--accent3); }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  footer span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SPEC TABLE */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .spec-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(30,45,74,0.5);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .spec-table td:first-child { color: var(--text); }
+
+  .code-container {
+    margin-top: 1.5rem;
+    background: #0a0e1a;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.2rem;
+    overflow-x: auto;
+  }
+  
+  .code-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .code-block {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">// GRUPO_05</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#componentes">Componentes</a></li>
+      <li><a href="#arquitectura">Arquitectura</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="home">
+  <div class="hero-tag">750001C · SEMESTRE 1 – 2026</div>
+  <h1>Proyecto Final<br><span>Arquitecto Cloud</span></h1>
+  <p class="hero-sub">
+    Infraestructura tecnológica modular con virtualización Linux avanzada, contenedorización con Docker Engine y orquestación elástica usando Kubernetes. Universidad del Valle.
+  </p>
+  <div class="hero-badges">
+    <span class="badge badge-blue">Pop!_OS 22.04</span>
+    <span class="badge badge-blue">Rocky Linux 9.4</span>
+    <span class="badge badge-purple">Docker Engine</span>
+    <span class="badge badge-purple">Docker Compose</span>
+    <span class="badge badge-green">Minikube</span>
+    <span class="badge badge-green">Kubernetes (k8s)</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="equipo">
+  <div class="sec-label">// INTEGRANTES</div>
+  <h2>Nuestro <span>Equipo</span></h2>
+
+  <div class="team-grid fade-in">
+    <div class="team-card">
+      <div class="avatar">JM</div>
+      <div class="team-name">Johan Mosquera</div>
+      <div class="team-role">Virtualización</div>
+      <a href="#" class="github-btn" onclick="alert('Agrega el usuario de GitHub aquí'); return false;">
+        ⌥ GitHub
+      </a>
+    </div>
+    <div class="team-card">
+      <div class="avatar">JC</div>
+      <div class="team-name">Jhoyner Córdoba</div>
+      <div class="team-role">Docker & Contenedores</div>
+      <a href="#" class="github-btn" onclick="alert('Agrega el usuario de GitHub aquí'); return false;">
+        ⌥ GitHub
+      </a>
+    </div>
+    <div class="team-card">
+      <div class="avatar">JS</div>
+      <div class="team-name">Jhon Diego Saavedra</div>
+      <div class="team-role">Kubernetes</div>
+      <a href="#" class="github-btn" onclick="alert('Agrega el usuario de GitHub aquí'); return false;">
+        ⌥ GitHub
+      </a>
+    </div>
+    <div class="team-card">
+      <div class="avatar">ST</div>
+      <div class="team-name">Santiago Tejada</div>
+      <div class="team-role">Documentación & Web</div>
+      <a href="#" class="github-btn" onclick="alert('Agrega el usuario de GitHub aquí'); return false;">
+        ⌥ GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="componentes">
+  <div class="sec-label">// INFORME TÉCNICO</div>
+  <h2>Componentes <span>Implementados</span></h2>
+
+  <div class="stats-row fade-in">
+    <div class="stat-card">
+      <span class="stat-num">2</span>
+      <div class="stat-label">VMs Desplegadas</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">4</span>
+      <div class="stat-label">Particiones Disco</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">2</span>
+      <div class="stat-label">Servicios Docker</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">3</span>
+      <div class="stat-label">Pods Scaled (k8s)</div>
+    </div>
+  </div>
+
+  <div class="comp-grid fade-in">
+
+    <div class="comp-card">
+      <div class="comp-num">COMPONENTE 01 · 30%</div>
+      <div class="comp-title">Virtualización avanzada con Linux</div>
+      <p class="comp-desc">
+        Configuración de un entorno aislado multi-sistema operativo en Oracle VirtualBox. Implica el particionamiento milimétrico del espacio en disco duro virtual, la sincronización de interfaces de red internas seguras y la interconexión transparente mediante el protocolo cifrado SSH.
+      </p>
+      <div class="comp-tags">
+        <span class="tag">VirtualBox</span>
+        <span class="tag">Pop!_OS 22.04</span>
+        <span class="tag">Rocky Linux 9.4</span>
+        <span class="tag">SSH Secure</span>
+        <span class="tag">Red Interna</span>
+      </div>
+
+      <table class="spec-table">
+        <tr>
+          <th>VM</th>
+          <th>Distribución</th>
+          <th>Dirección IP</th>
+          <th>Entorno de Trabajo</th>
+        </tr>
+        <tr>
+          <td>VM1</td>
+          <td>Pop!_OS 22.04 LTS</td>
+          <td>192.168.10.1</td>
+          <td>Entorno Gráfico (GUI)</td>
+        </tr>
+        <tr>
+          <td>VM2</td>
+          <td>Rocky Linux 9.4 Blue Onyx</td>
+          <td>192.168.10.2</td>
+          <td>Terminal Pura (CLI)</td>
+        </tr>
+      </table>
+
+      <table class="spec-table">
+        <tr>
+          <th>Punto de Montaje</th>
+          <th>Tamaño</th>
+          <th>Sistema de Archivos</th>
+          <th>Propósito Operativo</th>
+        </tr>
+        <tr><td>/boot/efi</td><td>1.1 GB</td><td>fat32</td><td>Gestor de arranque EFI</td></tr>
+        <tr><td>[SWAP]</td><td>2.1 GB</td><td>swap</td><td>Área de intercambio de memoria</td></tr>
+        <tr><td>/</td><td>21.5 GB</td><td>ext4</td><td>Directorio raíz del sistema operativo</td></tr>
+        <tr><td>/home</td><td>2.1 GB</td><td>ext4</td><td>Almacenamiento persistente de usuarios</td></tr>
+      </table>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-num">COMPONENTE 02 · 30%</div>
+      <div class="comp-title">Contenedorización Modular con Docker Engine</div>
+      <p class="comp-desc">
+        Aislamiento de servicios frontend y backend compilados desde imágenes base limpias de Rocky Linux. Se orquestaron mediante Docker Compose acoplando un servidor web Nginx con un servidor de API escrito en Python a través de volúmenes compartidos y redes virtuales privadas de Docker.
+      </p>
+      <div class="comp-tags">
+        <span class="tag tag-purple">Docker Engine</span>
+        <span class="tag tag-purple">Docker Compose</span>
+        <span class="tag tag-purple">Nginx Proxy</span>
+        <span class="tag tag-purple">Python HTTP API</span>
+        <span class="tag tag-purple">rockylinux:9-minimal</span>
+      </div>
+
+      <table class="spec-table">
+        <tr>
+          <th>Servicio</th>
+          <th>Imagen Base Utilizada</th>
+          <th>Puerto Interno</th>
+          <th>Responsabilidad</th>
+        </tr>
+        <tr>
+          <td>Frontend</td>
+          <td>rockylinux:9 + nginx</td>
+          <td>80:80</td>
+          <td>Despliegue del index.html corporativo</td>
+        </tr>
+        <tr>
+          <td>Backend</td>
+          <td>rockylinux:9 + python3</td>
+          <td>5000:5000</td>
+          <td>Procesamiento de peticiones del servidor</td>
+        </tr>
+      </table>
+
+      <div class="code-container">
+        <div class="code-title"># docker-compose.yml estructurado</div>
+        <pre class="code-block">version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"</pre>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-num">COMPONENTE 03 · 20%</div>
+      <div class="comp-title">Orquestación Elástica con Kubernetes & Minikube</div>
+      <p class="comp-desc">
+        Migración e inyección de la infraestructura elástica a nivel empresarial. Despliegue de un clúster local de Kubernetes mediante Minikube configurando un manifiesto YAML imperativo que define la replicación automatizada de los Pods y expone el tráfico de los microservicios de manera externa usando reglas de red NodePort.
+      </p>
+      <div class="comp-tags">
+        <span class="tag tag-green">Minikube Cluster</span>
+        <span class="tag tag-green">Kubectl CLI</span>
+        <span class="tag tag-green">K8s Deployment</span>
+        <span class="tag tag-green">NodePort Service</span>
+        <span class="tag tag-green">Horizontal Scaling</span>
+      </div>
+
+      <table class="spec-table">
+        <tr>
+          <th>Elemento K8s</th>
+          <th>Configuración Inicial</th>
+          <th>Configuración Escalada</th>
+          <th>Puerto NodePort</th>
+        </tr>
+        <tr>
+          <td>nginx-deployment</td>
+          <td>2 Réplicas (Pods Activos)</td>
+          <td>3 Réplicas (Manual Scale)</td>
+          <td>Interno: 80</td>
+        </tr>
+        <tr>
+          <td>nginx-service</td>
+          <td>Tipo: NodePort</td>
+          <td>Balanceo Balanceado</td>
+          <td>Externo: 30080</td>
+        </tr>
+      </table>
+
+      <div class="code-container">
+        <div class="code-title"># deployment.yaml (Manifiesto de Orquestación)</div>
+        <pre class="code-block">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080</pre>
+      </div>
+
+      <div class="code-container" style="background: #111827;">
+        <div class="code-title" style="color: var(--accent3)">// Comandos de Control y Verificación Ejecutados</div>
+        <pre class="code-block" style="color: #10b981;"># Lanzamiento y lectura del Manifiesto
+kubectl apply -f deployment.yaml
+
+# Comando estratégico para Escalado Manual a 3 réplicas
+kubectl scale deployment nginx-deployment --replicas=3
+
+# Inspección de salud de los nodos y puertos activos
+kubectl get pods
+kubectl get svc</pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="arquitectura">
+  <div class="sec-label">// DIAGRAMA GLOBAL</div>
+  <h2>Arquitectura <span>de la Solución</s
