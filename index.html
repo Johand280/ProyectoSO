@@ -302,6 +302,32 @@
     font-size: 0.75rem;
     overflow-x: auto;
   }
+  .btn-view {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-view:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Tarjetas más limpias */
+.pdf-card, .video-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+ 
+
+
 
   footer {
     border-top: 1px solid var(--border);
@@ -462,6 +488,38 @@
 │                 └─────── Red Interna ────────┘              │
 └─────────────────────────────────────────────────────────────┘
 </pre>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="documento">
+  <div class="sec-label">// DOCUMENTACIÓN</div>
+  <h2>Visualización de <span>PDF</span></h2>
+
+  <div class="comp-card pdf-card">
+    <p class="comp-desc">
+      Consulta el documento completo del proyecto.
+    </p>
+
+    <a href="InformeLaboratorio.pdf" target="_blank" class="btn-view">
+      📄 Ver documento completo
+    </a>
+  </div>
+</section>
+<div class="divider"></div>
+
+<section id="video">
+  <div class="sec-label">// PRESENTACIÓN</div>
+  <h2>Video del <span>Proyecto</span></h2>
+
+  <div class="comp-card video-card">
+    <p class="comp-desc">
+      Visualiza la demostración completa del sistema.
+    </p>
+
+    <a href="https://drive.google.com/drive/folders/1ALRM98FjJO3n1LxviY8wh_EhdGhftMWa?usp=drive_link" target="_blank" class="btn-view">
+      ▶ Ver video (solo con cuenta institucional)
+    </a>
   </div>
 </section>
 
